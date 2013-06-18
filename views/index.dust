@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+        <style>
+            html { height: 100% }
+            #map-canvas { height: 100% }
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+                padding-left: 0px;
+                padding-right: 0px;
+                height: 100%; margin: 0;
+            }
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+
+            .x.axis path {
+                display: none;
+            }
+
+            .line {
+                fill: none;
+                stroke: steelblue;
+                stroke-width: 1.5px;
+            }
+        </style>
+        <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="/vendor/jqplot/dist/jquery.jqplot.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="hero-unit">
+                <h1>
+                    Garmin Footpod Calibrator
+                </h1>
+                <h2>
+                    <form class="form-inline" id="uploadtcx" action='/uploadTCX' method="POST" enctype="multipart/form-data">
+                        <div class="fileupload fileupload-new" style="display: inline-block" data-provides="fileupload">
+                            <div class="input-append">
+                                <div class="uneditable-input span6">
+                                    <i class="icon-file fileupload-exists"></i> 
+                                    <span class="fileupload-preview"></span>
+                                </div>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new">Select TCX File</span>
+                                    <span class="fileupload-exists">Change</span>
+                                    <input type="file" class="btn btn-large btn-primary" name="tcx" />
+                                </span>
+                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                            </div>
+                        </div>
+                    </form>
+                </h2>
+            </div>
+            <hr>
+            <div class="row">
+                <h3 align="center" class="span12" id="whattodo"></h3>
+                <!-- <h4 align="center" class="span12" id="currentcal"><input type="text" placeholder="Your Current Calibration"></h4>-->
+                <div class="span4" id="tree"></div>
+                <div class="span8" style="height: 200px" id="chartdiv"></div>
+            </div>
+        </div> <!-- /container -->
+
+        <hr />
+            <div id="map-canvas" style="float: left; width: 50%; height: 100%; margin-left: 50px"></div>
+            <div id="pano" style="float: right; margin: auto; width: 40%; height: 100%; margin-right: 50px"></div>
+        <hr>
+        <footer>
+        <p>&copy; ZZO Associates 2013</p>
+        </footer>
+            <script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRWk1v6cZBbijq8RbDnwo6dOHREj3MXpI&sensor=false">
+            </script>
+
+<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+        <script src="vendor/jquery-2.0.2.min.js"></script>
+
+        <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/vendor/jstree-v.pre1.0/jquery.jstree.js"></script>
+        <script src="/vendor/jqplot/dist/jquery.jqplot.min.js"></script>
+
+        <script src="/js/main.js"></script>
+
+    </body>
+</html>

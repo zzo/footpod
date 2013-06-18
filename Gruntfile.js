@@ -1,0 +1,236 @@
+var path = require('path')
+    , exec = require('child_process').exec
+;
+
+module.exports = function(grunt) {
+    // Project configuration.
+    grunt.initConfig({
+        jshint: {
+            all: ['Gruntfile.js', 'public/javascripts/**/*.js', 'spec/**/*.js', 'app.js']
+            , options: {
+                globals: {
+                    jQuery: true
+                }
+                , 'laxcomma': true
+                , 'multistr': true
+            }
+        },
+        jasmine : {
+            test: {
+                src : 'public/javascripts/**/*.js',
+                options : {
+                    specs : 'spec/client/**/*.js'
+                    , keepRunner: true
+                    , vendor: [ 
+                        'publc/vendor/jquery-2.0.2.min.js'
+                        , 'public/vendor/jasmine-jquery.js' 
+                        , 'public/vendor/dust-core-1.2.5.min.js' 
+                        , '/vendor/bootstrap/js/bootstrap.min.js'
+                    ]
+                    , junit: {
+                        path: "./build/reports/jasmine/"
+                        , consolidate: true
+                    }
+                    , template: require('grunt-template-jasmine-istanbul')
+                    , templateOptions: {
+                        coverage: 'public/coverage/client/coverage.json'
+                        , report:   'public/coverage/client'
+                    }
+
+                }
+            }
+        },
+        express: {
+            server: {
+                options: {
+                    server: path.resolve('./app.js')
+                    , debug: true
+                    , bases: 'public'
+                    , host: 'http://<%= env.options.EX_HOST %>:<%= env.options.EX_PORT %>'
+                }
+            }
+        },
+        dustjs: {
+            compile: {
+                files: {
+                    "public/javascripts/templates.js": ["views/**/*.dust"]
+                }
+            }
+        }
+        , env: {
+            options : {
+                //Shared Options Hash
+                EX_HOST: '127.0.0.1'
+                , EX_PORT: 3000
+            }
+            , test: {
+                NODE_ENV : 'test'
+            }
+            , coverage: {
+                COVERAGE: true
+            }
+        }
+        , jasmine_node_coverage: {
+            options: {
+                coverDir: 'public/coverage/server'
+                , specDir: 'spec/server'
+                , junitDir: './build/reports/jasmine_node/'
+            }
+        }
+        , webd: {
+            options: {
+                tests: 'spec/webdriver/*.js'
+                , junitDir: './build/reports/webdriver/'
+                , coverDir: 'public/coverage/webdriver'
+            }
+        }
+        , total_coverage: {
+            options: {
+                coverageDir: './build/reports'
+                , outputDir: 'public/coverage/total'
+            }
+        }
+        , plato: {
+            dashr: {
+              options : {
+                jshint : false
+              }
+              , files: {
+                'public/plato': ['public/javascripts/**/*.js', 'spec/**/*.js'],
+              }
+            }
+            , options: {
+                jshint: {
+                    globals: {
+                        jQuery: true
+                    }
+                    , 'laxcomma': true
+                    , 'multistr': true
+                }
+            }
+          },
+    });
+
+    // Load the plugins
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-express');
+    grunt.loadNpmTasks('grunt-dustjs');
+    grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-plato');
+
+    // Default task(s).
+    grunt.registerTask('default', ['jshint']);
+
+    grunt.registerTask('test', [
+        'jshint', 
+        'jasmine',
+        'jasmine_node_coverage',
+        'webdriver_coverage',
+        'total_coverage',
+        'plato'
+    ]); 
+
+    // webdriver tests with coverage
+    grunt.registerTask('webdriver_coverage', [
+        'env:test'  // use test db
+        , 'env:coverage' // server sends by coverage'd JS files
+        , 'express'
+        , 'webd:coverage'
+    ]);
+
+    // webdriver tests without coverage
+    grunt.registerTask('webdriver', [
+        'env:test'  // use test db
+        , 'express'
+        , 'webd'
+    ]);
+
+     grunt.registerTask('jasmine_node_coverage', 'Istanbul code coverage for jasmine_node', function() {
+        var done = this.async()
+            , options = this.options()
+        ;
+
+        var coverCmd = 'node_modules/istanbul/lib/cli.js cover '
+            .concat('--dir ')
+            .concat(options.coverDir)
+            .concat(' -x ' + "'**/spec/**'" + ' jasmine-node')
+            .concat(' -- ' )
+            .concat(options.specDir)
+            .concat(' --forceexit --junitreport --output ')
+            .concat(options.junitDir);
+
+        exec(coverCmd, { }, function(err, stdout, stderr) {
+                grunt.log.write(stdout);
+                grunt.log.write('Server-side coverage available at: ' +
+                        path.join(options.coverDir, 'lcov-report', 'index.html'));
+                done();
+        });
+    });
+
+    grunt.registerTask('webd', 'Webdriver with optional coverage', function(coverage) {
+        var done = this.async()
+            , options = this.options()
+        ;
+
+        grunt.task.requires('env:test');
+        grunt.task.requires('express');
+
+        if (coverage) {
+            grunt.task.requires('env:coverage');
+        }
+
+        var testCmd = 'jasmine-node '
+            .concat(options.tests)
+            .concat(' --forceexit --junitreport --verbose --output ')
+            .concat(options.junitDir);
+
+        exec(testCmd, { }, function(err, stdout, stderr) {
+            grunt.log.write(stdout);
+            if (err) { return done(false); }
+            if (coverage) {
+                var coverCmd = 'node_modules/istanbul/lib/cli.js report --root '
+                    .concat(options.junitDir)
+                    .concat(' --dir ')
+                    .concat(options.coverDir);
+
+                exec(coverCmd, { }, function(err, stdout, stderr) {
+                    grunt.log.write(stdout);
+                    grunt.log.writeln('Webdriver coverage available at: ' + 
+                        path.join(options.coverDir, 'lcov-report', 'index.html'));
+                    done(err);
+                });
+            } else {
+                done();
+            }
+        });
+    });
+
+    // aggregate all coverage data from all tests
+    grunt.registerTask('total_coverage', 'Aggregate coverage from all tests', function() {
+        var done = this.async()
+            , options = this.options()
+        ;
+
+        var aggCmd = 'node_modules/istanbul/lib/cli.js report --root' 
+            .concat(options.coverageDir)
+            .concat(' --dir ')
+            .concat(options.outputDir)
+        ;
+
+        exec(aggCmd, { }, function(err, stdout, stderr) {
+            grunt.log.write(stdout);
+            grunt.log.writeln('Total coverage available at: ' + 
+                path.join(options.outputDir, 'lcov-report', 'index.html'));
+
+            // output cobertura for jenkins
+            aggCmd += ' cobertura';
+            exec(aggCmd, { }, function(err, stdout, stderr) {
+                grunt.log.write(stdout);
+                done();
+            });
+        });
+
+    });
+};
