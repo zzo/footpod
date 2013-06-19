@@ -9,7 +9,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , cons = require('consolidate')
-  , tcxParser = require('parseTCX')
+  , tcxParser = require('tcxparse')
 ;
 
 var app = express();
