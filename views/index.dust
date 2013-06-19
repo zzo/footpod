@@ -124,12 +124,11 @@
               src="https://maps.googleapis.com/maps/api/js?key={secrets.google_key}&sensor=false">
             </script>
 
-        <script src="vendor/jquery-2.0.2.min.js"></script>
-
+        <script src="/vendor/jquery-2.0.2.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
         <script src="/vendor/jstree-v.pre1.0/jquery.jstree.js"></script>
         <script src="/vendor/jqplot/dist/jquery.jqplot.min.js"></script>
-        <script type="text/javascript" src="/vendor/jqplot/dist/plugins/jqplot.cursor.min.js"></script>
+        <script src="/vendor/jqplot/dist/plugins/jqplot.cursor.min.js"></script>
 
 
         <script src="/js/main.js"></script>
