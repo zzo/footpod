@@ -1,11 +1,22 @@
 {
   "name": "footpod",
-  "version": "0.0.1",
-  "private": true,
+  "description": "WebUI for determining footpod calibration from TCX file",
+  "version": "1.0.0",
+  "keywords": [
+    "garmin",
+    "footpod",
+    "exercise"
+  ],
+  "author": "Mark Ethan Trostler <mark@zzo.com>",
   "scripts": {
     "start": "node app.js",
     "test": "grunt test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zzo/footpod.git"
+  },
+  "homepage": "https://github.com/zzo/footpod",
   "dependencies": {
     "express": "3.2.5",
     "consolidate": "~0.9.1",
