@@ -13,11 +13,16 @@ $('input[type=file]').on('change', function(event) {
         contentType: false,  
         success: function (res) {  
             loading.fadeOut('slow');
-            updateTree(JSON.parse(res));
+            var obj = JSON.parse(res);
+            if (obj.error) {
+              alert(obj.error);
+            } else {
+              updateTree(obj);
+            }
         },
         error: function(res) {
             loading.fadeOut('slow');
-            console.log(res);
+            alert("Server Error - You Sunk My Battleship!");
         }
     });  
 });

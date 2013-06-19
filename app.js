@@ -48,9 +48,13 @@ app.post('/uploadTCX', function(req, res) {
         file = req.files.tcx[req.files.tcx.length-1].path;
     }
     tcxParser.parseFile(file, function(err, tcx) {
-        var details = tcx.getFootpodDetails();
-        res.json(JSON.stringify(details));
         fs.unlinkSync(file);
+        if (err) {
+          res.json(JSON.stringify({ error: 'Bad TCX file' }));
+        } else {
+          var details = tcx.getFootpodDetails();
+          res.json(JSON.stringify(details));
+        }
     });
 });
 
