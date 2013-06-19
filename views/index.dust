@@ -37,12 +37,31 @@
                 stroke: steelblue;
                 stroke-width: 1.5px;
             }
+
+            #loading{
+                position:absolute;
+                left:50%;
+                right:50%;
+                top:50%;
+                bottom:50%;
+                border:1px solid #333;
+                background-color:#666;
+                color:#333;
+                font-size:18px;
+                width:200px;
+                height:40px;
+                padding:10px;
+                margin:0px auto;
+                font-family:Tahoma, Geneva, sans-serif
+        }
         </style>
         <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="/vendor/jqplot/dist/jquery.jqplot.min.css">
         <link rel="stylesheet" href="/css/main.css">
     </head>
     <body>
+        <div id="loading" align="center"><img src="/loader.gif" /><br />HOLD...</div>
+
         <div class="container">
             <div class="hero-unit">
                 <h1>

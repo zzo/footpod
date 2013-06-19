@@ -1,6 +1,9 @@
 var formdata = new FormData();
+var loading = $("#loading");
+loading.hide();
 
 $('input[type=file]').on('change', function(event) {
+    loading.fadeIn('slow');
     formdata.append("tcx", this.files[0]);
     $.ajax({  
         url: "/uploadTCX",  
@@ -9,9 +12,11 @@ $('input[type=file]').on('change', function(event) {
         processData: false,  
         contentType: false,  
         success: function (res) {  
+            loading.fadeOut('slow');
             updateTree(JSON.parse(res));
         },
         error: function(res) {
+            loading.fadeOut('slow');
             console.log(res);
         }
     });  
