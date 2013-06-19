@@ -119,12 +119,13 @@ function updateTree(data) {
     var treeData = [{
         data: 'Adjustment: ' + round(data.adjustment, 3) + ', Distance ' + round(data.totalDistance, 1) + ' mile(s)'
         , children: []
+        , state: 'open'
     }]
     ;
 
     $("#whattodo").html('Multiply your current calibration factor by ' + round(data.adjustment, 3));
 
-    console.log(data);
+    //console.log(data);
     data.lapscale.forEach(function(lapscale, index) {
         treeData[0].children.push({
             data: 'Lap ' 
@@ -137,12 +138,11 @@ function updateTree(data) {
         });
     });
    
-    $('#tree').jstree({
+    var tree = $('#tree').jstree({
         json_data: {
             data: treeData
         }
         , plugins: [ 'json_data', 'themes', 'ui' ]
-
     }).bind("select_node.jstree", function (e, treeD) {
         var lap = treeD.rslt.obj.data("lap");
         if (typeof lap === 'undefined') {

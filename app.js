@@ -16,8 +16,8 @@ var app = express();
 
 // all environments
 app.engine('dust', cons.dust);
-app.set('port', process.env.EX_PORT || 3000);
-app.set('host', process.env.EX_HOST || 'localhost');
+app.set('port', process.env.EX_PORT || 80);
+app.set('host', process.env.EX_HOST || 'dashr.net');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'dust');
 app.use(express.favicon());
@@ -38,7 +38,7 @@ app.get('/', routes.index);
 app.post('/uploadTCX', function(req, res) {
     //fs.readFile(req.files.displayImage.path, function (err, data) {
     //});
-    console.log(req.files);
+    //console.log(req.files);
     var file = req.files.tcx.path;
     if (!file) {
         file = req.files.tcx[req.files.tcx.length-1].path;

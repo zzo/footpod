@@ -74,7 +74,7 @@
         <div class="container">
             <div class="hero-unit">
                 <h1>
-                    Garmin Footpod Calibrator
+                  Garmin Footpod Calibrator <a href="http://fellrnr.com/wiki/Garmin_Foot_Pod_Calibration" target="_blank"><font size="6">(What is this?)</font></a>
                 </h1>
                 <h2>
                     <form class="form-inline" id="uploadtcx" action='/uploadTCX' method="POST" enctype="multipart/form-data">
@@ -107,7 +107,7 @@
             </div>
             <div class="row">
                 <div class="span4"></div>
-                <div class="span8" style="height: 200px" id="distdiv"></div>
+                <div class="span8" style="height: 300px" id="distdiv"></div>
             </div>
         </div> <!-- /container -->
 
