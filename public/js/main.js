@@ -9,11 +9,9 @@ $('input[type=file]').on('change', function(event) {
         processData: false,  
         contentType: false,  
         success: function (res) {  
-            console.log('AJAX SUCCESS: ');
             updateTree(JSON.parse(res));
         },
         error: function(res) {
-            console.log('AJAX ERROR: ');
             console.log(res);
         }
     });  
@@ -54,7 +52,7 @@ function updateTree(data) {
 
     $("#whattodo").html('Multiply your current calibration factor by ' + round(data.adjustment, 3));
 
-    console.log(data);
+    //console.log(data);
     data.lapscale.forEach(function(lapscale, index) {
         treeData[0].children.push({
             data: 'Lap ' 
@@ -75,11 +73,8 @@ function updateTree(data) {
 
     }).bind("select_node.jstree", function (e, treeD) {
         var lap = treeD.rslt.obj.data("lap");
-        console.log('selected lap: ' + lap);
         if (typeof lap === 'undefined') {
             // selected total
-            console.log('show graph total: ');
-            console.log(data.lapscale);
             showGraph({ data: data.lapscale, title: 'Adjustment By Lap', x: 'Lap' }); 
         } else {
             var firstIndex = data.lapdata.lapindex[lap]
@@ -93,7 +88,7 @@ function updateTree(data) {
             showGraph({ 
                 data: data.lapdata.scale.slice(firstIndex, lastIndex)
                 , title: 'Adjustment By Lap ' + (lap + 1)
-                , x: 'Lap'
+                , x: 'Seconds'
             }); 
         }   
     });

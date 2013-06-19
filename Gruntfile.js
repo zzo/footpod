@@ -17,15 +17,15 @@ module.exports = function(grunt) {
         },
         jasmine : {
             test: {
-                src : 'public/javascripts/**/*.js',
+                src : 'public/js/**/*.js',
                 options : {
                     specs : 'spec/client/**/*.js'
                     , keepRunner: true
                     , vendor: [ 
-                        'publc/vendor/jquery-2.0.2.min.js'
+                        'public/vendor/jquery-2.0.2.min.js'
                         , 'public/vendor/jasmine-jquery.js' 
                         , 'public/vendor/dust-core-1.2.5.min.js' 
-                        , '/vendor/bootstrap/js/bootstrap.min.js'
+                        , 'public/vendor/bootstrap/js/bootstrap.min.js'
                     ]
                     , junit: {
                         path: "./build/reports/jasmine/"
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
         'jshint', 
         'jasmine',
         'jasmine_node_coverage',
-        'webdriver_coverage',
+//        'webdriver_coverage',
         'total_coverage',
         'plato'
     ]); 

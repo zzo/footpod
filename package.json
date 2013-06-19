@@ -10,7 +10,7 @@
     "express": "3.2.5",
     "consolidate": "~0.9.1",
     "dustjs-linkedin": "~1.2.5",
-    "parseTCX": "*"
+    "tcxparse": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

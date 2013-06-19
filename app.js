@@ -39,8 +39,12 @@ app.post('/uploadTCX', function(req, res) {
     //fs.readFile(req.files.displayImage.path, function (err, data) {
     //});
     console.log(req.files);
-    tcxParser.parseFile(req.files.tcx.path, function(err, tcx) {
-        var details = tcx.getFootpodDetails('zob');
+    var file = req.files.tcx.path;
+    if (!file) {
+        file = req.files.tcx[req.files.tcx.length-1].path;
+    }
+    tcxParser.parseFile(file, function(err, tcx) {
+        var details = tcx.getFootpodDetails();
         res.json(JSON.stringify(details));
     });
 });
