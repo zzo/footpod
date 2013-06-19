@@ -4,15 +4,18 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , cons = require('consolidate')
   , tcxParser = require('tcxparse')
+  , fs = require('fs')
 ;
 
-var app = express();
+var app = express()
+  , secrets = JSON.parse(fs.readFileSync("secret.json", "utf8"))
+;
+
+app.locals.secrets = secrets
 
 // all environments
 app.engine('dust', cons.dust);
@@ -34,10 +37,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/', function(req, res){ res.render('index'); })
+
 app.post('/uploadTCX', function(req, res) {
-    //fs.readFile(req.files.displayImage.path, function (err, data) {
-    //});
     //console.log(req.files);
     var file = req.files.tcx.path;
     if (!file) {
@@ -46,6 +48,7 @@ app.post('/uploadTCX', function(req, res) {
     tcxParser.parseFile(file, function(err, tcx) {
         var details = tcx.getFootpodDetails();
         res.json(JSON.stringify(details));
+        fs.unlinkSync(file);
     });
 });
 
