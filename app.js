@@ -15,7 +15,7 @@ var app = express()
   , secrets = JSON.parse(fs.readFileSync("secret.json", "utf8"))
 ;
 
-app.locals.secrets = secrets
+app.locals.secrets = secrets;
 
 // all environments
 app.engine('dust', cons.dust);
@@ -37,7 +37,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', function(req, res){ res.render('index'); })
+app.get('/', function(req, res){ 
+  res.render('index'); 
+});
 
 app.post('/uploadTCX', function(req, res) {
     //console.log(req.files);
