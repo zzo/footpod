@@ -54,6 +54,16 @@
                 margin:0px auto;
                 font-family:Tahoma, Geneva, sans-serif
         }
+        div.overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: #000;
+            opacity: 0.5;
+            filter: alpha(opacity = 50); /* required for opacity to work in IE */
+        }
         </style>
         <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="/vendor/jqplot/dist/jquery.jqplot.min.css">
@@ -61,7 +71,6 @@
     </head>
     <body>
         <div id="loading" align="center"><img src="/loader.gif" /><br />HOLD...</div>
-
         <div class="container">
             <div class="hero-unit">
                 <h1>
@@ -85,6 +94,9 @@
                         </div>
                     </form>
                 </h2>
+                <h3 align="center">
+                    <a target="_blank" href="https://support.garmin.com/support/searchSupport/case.faces?caseId=%7B6e1aa610-6d25-11dc-6782-000000000000%7D">Click here to find your TCX files</a>
+                </h3>
             </div>
             <hr>
             <div class="row">
@@ -92,6 +104,10 @@
                 <!-- <h4 align="center" class="span12" id="currentcal"><input type="text" placeholder="Your Current Calibration"></h4>-->
                 <div class="span4" id="tree"></div>
                 <div class="span8" style="height: 200px" id="chartdiv"></div>
+            </div>
+            <div class="row">
+                <div class="span4"></div>
+                <div class="span8" style="height: 200px" id="distdiv"></div>
             </div>
         </div> <!-- /container -->
 
@@ -106,12 +122,13 @@
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRWk1v6cZBbijq8RbDnwo6dOHREj3MXpI&sensor=false">
             </script>
 
-<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
         <script src="vendor/jquery-2.0.2.min.js"></script>
 
         <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
         <script src="/vendor/jstree-v.pre1.0/jquery.jstree.js"></script>
         <script src="/vendor/jqplot/dist/jquery.jqplot.min.js"></script>
+        <script type="text/javascript" src="/vendor/jqplot/dist/plugins/jqplot.cursor.min.js"></script>
+
 
         <script src="/js/main.js"></script>
 

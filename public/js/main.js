@@ -26,7 +26,44 @@ function round(x, n) {
     return n ? Math.round(x * (n = Math.pow(10, n))) / n : Math.round(x);
 }
 
-function showGraph(obj) {
+function distGraph(obj) {
+    $("#distdiv").html('');
+    $.jqplot('distdiv', obj.data, {
+        title: obj.title
+        , axes: {
+            xaxis: {
+                label: obj.x
+                , pad: 0
+            }
+            , yaxis: {
+                label: 'Distance'
+            }
+        }
+        , series: [
+            {
+                lineWidth: 1
+                , markerOptions: { show: false }
+            }
+            , {
+                lineWidth: 1
+                , markerOptions: { show: false }
+            }
+        ]
+      , cursor:{ 
+        show: true,
+        zoom:true, 
+        showTooltip:true
+      } 
+      , legend:{
+            show:true
+            , labels: ['GPS', 'Foot Pod' ]
+            , rendererOptions:{ numberRows: 2, placement: "outside"}
+            , location: 'e'
+        }
+    });
+}
+
+function adjGraph(obj, data) {
     $("#chartdiv").html('');
     $.jqplot('chartdiv', [ obj.data  ], {
         title: obj.title
@@ -45,6 +82,36 @@ function showGraph(obj) {
                 , markerOptions: { show: false }
             }
         ]
+      , cursor:{ 
+        show: true,
+        zoom:true, 
+        showTooltip:true
+      } 
+      , canvasOverlay: {
+            show: true
+            , objects: [
+                {
+                    horizontalLine: {
+                        y: data.adjustment + data.stdev
+                        , lineWidth: 3
+                        , xOffset: 0
+                        , color: 'rgb(255, 0, 0)'
+                    }
+                    , horizontalLine: {
+                        y: data.adjustment - data.stdev
+                        , lineWidth: 3
+                        , xOffset: 0
+                        , color: 'rgb(0, 255, 0)'
+                    }
+                    , horizontalLine: {
+                        y: data.adjustment
+                        , lineWidth: 3
+                        , xOffset: 0
+                        , color: 'rgb(0, 0, 255)'
+                    }
+                }
+            ]
+      }
     });
 }
 
@@ -57,7 +124,7 @@ function updateTree(data) {
 
     $("#whattodo").html('Multiply your current calibration factor by ' + round(data.adjustment, 3));
 
-    //console.log(data);
+    console.log(data);
     data.lapscale.forEach(function(lapscale, index) {
         treeData[0].children.push({
             data: 'Lap ' 
@@ -80,7 +147,8 @@ function updateTree(data) {
         var lap = treeD.rslt.obj.data("lap");
         if (typeof lap === 'undefined') {
             // selected total
-            showGraph({ data: data.lapscale, title: 'Adjustment By Lap', x: 'Lap' }); 
+            adjGraph({ data: data.lapscale, title: 'Adjustment By Lap', x: 'Lap' }, data); 
+            distGraph({ data: [ data.lapdata.gpsdistance, data.lapdata.footpoddistance ], title: 'GPS & Footpod Distance', x: 'Time' }); 
         } else {
             var firstIndex = data.lapdata.lapindex[lap]
                 , lastIndex = data.lapdata.lapindex[lap + 1]
@@ -90,15 +158,24 @@ function updateTree(data) {
                 lastIndex = data.lapdata.scale.length;
             }
 
-            showGraph({ 
+            adjGraph({ 
                 data: data.lapdata.scale.slice(firstIndex, lastIndex)
                 , title: 'Adjustment By Lap ' + (lap + 1)
+                , x: 'Seconds'
+            }, data); 
+            
+            distGraph({ 
+                data: [ data.lapdata.gpsdistance.slice(firstIndex, lastIndex),
+                            data.lapdata.footpoddistance.slice(firstIndex, lastIndex),
+                        ]
+                , title: 'Distance By Lap ' + (lap + 1)
                 , x: 'Seconds'
             }); 
         }   
     });
 
-    showGraph({ data: data.lapscale, title: 'Adjustment By Lap', x: 'Lap' }); 
+    adjGraph({ data: data.lapscale, title: 'Adjustment By Lap', x: 'Lap' }, data); 
+    distGraph({ data: [ data.lapdata.gpsdistance, data.lapdata.footpoddistance ], title: 'GPS & Footpod Distance', x: 'Time' }); 
 
     var myLatLng = new google.maps.LatLng(data.lapdata.gps[0][0], data.lapdata.gps[0][1]);
     var mapOptions = {
