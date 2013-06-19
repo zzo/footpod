@@ -116,9 +116,9 @@
             <div id="pano" style="float: right; margin: auto; width: 40%; height: 100%; margin-right: 50px"></div>
         <hr>
         <footer>
-        <p align="center">&copy;&nbsp;ZZO Associates 2013</p>
-        <h4 align="center"><a href="https://github.com/zzo/footpod/">THE CODE</a></h4>
-        <h4 align="center"><a href="https://github.com/zzo/footpod/issues/new">BUG???  Be sure to upload your TCX file too!</a></h4>
+          <p align="center">&copy;&nbsp;ZZO Associates 2013</p>
+          <h4 align="center"><a target="_blank" href="https://github.com/zzo/footpod/">THE CODE</a></h4>
+          <h4 align="center"><a target="_blank" href="https://github.com/zzo/footpod/issues/new">BUG???  Be sure to upload your TCX file too!</a></h4>
         </footer>
             <script type="text/javascript"
               src="https://maps.googleapis.com/maps/api/js?key={secrets.google_key}&sensor=false">
