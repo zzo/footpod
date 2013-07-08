@@ -9,8 +9,8 @@
   ],
   "author": "Mark Ethan Trostler <mark@zzo.com>",
   "scripts": {
-    "start": "/bin/rm -f logs/http.log logs/out.log logs/forever.log logs/err.log; node_modules/.bin/forever -a -p logs --minUptime 2000 --spinSleepTime 1000 -l forever.log -o logs/out.log -e logs/err.log start app.js",
-    "stop": "node_modules/.bin/forever stop app.js",
+    "start": "/bin/rm -f logs/http.log logs/out.log logs/forever.log logs/err.log; node_modules/.bin/forever -a -p logs --minUptime 2000 --spinSleepTime 1000 -l forever.log -o logs/out.log -e logs/err.log start footpod.js",
+    "stop": "node_modules/.bin/forever stop footpod.js",
     "test": "grunt test"
   },
   "repository": {
