@@ -101,6 +101,7 @@
             <hr>
             <div class="row">
                 <h3 align="center" class="span12" id="whattodo"></h3>
+                <h4 align="center" class="span12" id="ratio"></h4>
                 <!-- <h4 align="center" class="span12" id="currentcal"><input type="text" placeholder="Your Current Calibration"></h4>-->
                 <div class="span4" id="tree"></div>
                 <div class="span8" style="height: 200px" id="chartdiv"></div>

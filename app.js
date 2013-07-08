@@ -19,8 +19,8 @@ app.locals.secrets = secrets;
 
 // all environments
 app.engine('dust', cons.dust);
-app.set('port', process.env.EX_PORT || 80);
-app.set('host', process.env.EX_HOST || 'dashr.net');
+app.set('port', process.env.EX_PORT || 4000);
+app.set('host', process.env.EX_HOST || '0.0.0.0');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'dust');
 app.use(express.favicon());
@@ -48,7 +48,7 @@ app.post('/uploadTCX', function(req, res) {
         file = req.files.tcx[req.files.tcx.length-1].path;
     }
     tcxParser.parseFile(file, function(err, tcx) {
-        fs.unlinkSync(file);
+//        fs.unlinkSync(file);
         if (err) {
           res.json(JSON.stringify({ error: 'Bad TCX file' }));
         } else {

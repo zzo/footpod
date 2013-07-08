@@ -2,6 +2,14 @@ var formdata = new FormData();
 var loading = $("#loading");
 loading.hide();
 
+function sum(arr) {
+  var s = 0;
+  arr.forEach(function(val) {
+    s += val;
+  });
+  return s;
+}
+
 $('input[type=file]').on('change', function(event) {
     loading.fadeIn('slow');
     formdata.append("tcx", this.files[0]);
@@ -128,7 +136,12 @@ function updateTree(data) {
     }]
     ;
 
+            var totalgps = round(sum(data.lapdata.gpsdistance), 2);
+            var totalpod = round(sum(data.lapdata.footpoddistance), 2);
+            var totalratio = round(totalgps / totalpod, 2);
+
     $("#whattodo").html('Multiply your current calibration factor by ' + round(data.adjustment, 3));
+    $("#ratio").html("GPS to FootPod Ratio: " + totalgps + ' / ' + totalpod + ' = '  + totalratio);
 
     //console.log(data);
     data.lapscale.forEach(function(lapscale, index) {
